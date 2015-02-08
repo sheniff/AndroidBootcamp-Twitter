@@ -1,7 +1,7 @@
 # AndroidBootcamp-TwitterApp
 Twitter project for Android Bootcamp at Yahoo!
 
-
+![twitter1](https://cloud.githubusercontent.com/assets/1939291/6099041/5d8c00a0-afa3-11e4-973c-295b77235ba0.gif)
 
 **User Stories:**
 * [x] User can sign in to Twitter using OAuth login
