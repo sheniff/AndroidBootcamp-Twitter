@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="twitter">#4099FF</color>
+    <color name="twitter_translucid">#884099FF</color>
+    <color name="white">#FFF</color>
+    <color name="handler_twitter">#999</color>
+    <color name="timestamp_twitter">#CCC</color>
+</resources>
