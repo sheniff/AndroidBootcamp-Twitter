@@ -2,6 +2,8 @@ package com.codepath.apps.twitterapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 
@@ -112,4 +114,11 @@ public class Helpers {
 
         return user;
     }
+
+    public static boolean iAmOnline(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetInfo != null && activeNetInfo.isConnectedOrConnecting();
+    }
+
 }
