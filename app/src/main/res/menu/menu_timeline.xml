@@ -8,5 +8,13 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/compose"
-        android:onClick="compose"/>
+        android:onClick="compose" />
+
+    <item
+        android:id="@+id/niProfile"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"
+        android:orderInCategory="101"
+        android:onClick="onProfileView"/>
 </menu>

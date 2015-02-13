@@ -22,6 +22,12 @@ public class User extends Model implements Parcelable {
     private String profileImageUrl;
     @Column(name = "ScreenName")
     private String screenName;
+    @Column(name = "Tagline")
+    private String tagline;
+    @Column(name = "FollowersCount")
+    private int followersCount;
+    @Column(name = "FollowingCount")
+    private int followingCount;
 
     public User() {
         super();
@@ -32,6 +38,9 @@ public class User extends Model implements Parcelable {
         this.name = in.readString();
         this.profileImageUrl = in.readString();
         this.screenName = in.readString();
+        this.tagline = in.readString();
+        this.followersCount = in.readInt();
+        this.followingCount = in.readInt();
     }
 
     public static User fromJSON(JSONObject jsonObject) {
@@ -42,6 +51,9 @@ public class User extends Model implements Parcelable {
             user.profileImageUrl = jsonObject.getString("profile_image_url");
             user.uid = jsonObject.getLong("id");
             user.screenName = jsonObject.getString("screen_name");
+            user.tagline = jsonObject.getString("description");
+            user.followersCount = jsonObject.getInt("followers_count");
+            user.followingCount = jsonObject.getInt("friends_count");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -65,6 +77,18 @@ public class User extends Model implements Parcelable {
         return uid;
     }
 
+    public String getTagline() {
+        return tagline;
+    }
+
+    public int getFollowersCount() {
+        return followersCount;
+    }
+
+    public int getFollowingCount() {
+        return followingCount;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -79,6 +103,18 @@ public class User extends Model implements Parcelable {
 
     public void setUid(long uid) {
         this.uid = uid;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public void setFollowersCount(int followersCount) {
+        this.followersCount = followersCount;
+    }
+
+    public void setFollowingCount(int followingCount) {
+        this.followingCount = followingCount;
     }
 
     // ORM methods
@@ -98,6 +134,9 @@ public class User extends Model implements Parcelable {
         dest.writeString(name);
         dest.writeString(profileImageUrl);
         dest.writeString(screenName);
+        dest.writeString(tagline);
+        dest.writeInt(followersCount);
+        dest.writeInt(followingCount);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {

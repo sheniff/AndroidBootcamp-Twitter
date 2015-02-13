@@ -100,6 +100,9 @@ public class Helpers {
         edit.putString("currentUserName", user.getName());
         edit.putString("currentUserScreenName", user.getScreenName());
         edit.putString("currentUserProfileImage", user.getProfileImageUrl());
+        edit.putString("currentUserTagline", user.getTagline());
+        edit.putInt("currentUserFollowersCount", user.getFollowersCount());
+        edit.putInt("currentUserFollowingCount", user.getFollowingCount());
         edit.apply();
     }
 
@@ -111,7 +114,10 @@ public class Helpers {
         user.setName(pref.getString("currentUserName", ""));
         user.setScreenName(pref.getString("currentUserScreenName", ""));
         user.setProfileImageUrl(pref.getString("currentUserProfileImage", ""));
-
+        user.setTagline(pref.getString("currentUserTagline", ""));
+        user.setFollowersCount(pref.getInt("currentUserFollowersCount", 0));
+        user.setFollowingCount(pref.getInt("currentUserFollowingCount", 0));
+        
         return user;
     }
 

@@ -1,6 +1,7 @@
 package com.codepath.apps.twitterapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.codepath.apps.twitterapp.Helpers;
 import com.codepath.apps.twitterapp.R;
+import com.codepath.apps.twitterapp.activities.ProfileActivity;
 import com.codepath.apps.twitterapp.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +33,7 @@ public class TweetsArrayAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Tweet tweet = (Tweet) getItem(position);
+        final Tweet tweet = (Tweet) getItem(position);
         ViewHolder viewHolder;
 
         if(convertView == null) {
@@ -54,6 +56,15 @@ public class TweetsArrayAdapter extends ArrayAdapter {
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(viewHolder.ivProfileImage);
 
+        viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                i.putExtra("screen_name", tweet.getUser().getScreenName());
+                getContext().startActivity(i);
+            }
+        });
+        
         return convertView;
     }
 }

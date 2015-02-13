@@ -119,7 +119,13 @@ public class TimelineActivity extends ActionBarActivity {
             startActivityForResult(i, REQUEST_CODE);
         }
     }
-    
+
+    public void onProfileView(MenuItem item) {
+        // Launch the profile view
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
+    }
+
     // Return the order of the fragments in the view pager
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
         private String tabTitles[] = {"Home", "Mentions"};
