@@ -88,4 +88,20 @@ public class TwitterClient extends OAuthBaseClient {
         }
         getClient().get(apiUrl, params, handler);
     }
+
+    public void getUserFollowers(String screenName, String cursor, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("followers/list.json");
+        RequestParams params = new RequestParams();
+        params.put("screen_name", screenName);
+        params.put("cursor", cursor);
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getUserFriends(String screenName, String cursor, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("friends/list.json");
+        RequestParams params = new RequestParams();
+        params.put("screen_name", screenName);
+        params.put("cursor", cursor);
+        getClient().get(apiUrl, params, handler);
+    }
 }

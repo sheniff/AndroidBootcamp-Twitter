@@ -12,48 +12,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Delete;
 import com.codepath.apps.twitterapp.Helpers;
 import com.codepath.apps.twitterapp.TwitterApplication;
 import com.codepath.apps.twitterapp.TwitterClient;
-import com.codepath.apps.twitterapp.activities.TweetActivity;
 import com.codepath.apps.twitterapp.listeners.EndlessScrollListener;
-import com.codepath.apps.twitterapp.models.Tweet;
+import com.codepath.apps.twitterapp.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HomeTimelineFragment extends TweetsListFragment {
+public class FollowingFragment extends UsersListFragment {
 
     // region Variables
     private TwitterClient client;
+    private String nextUserCursor;
     // endregion
 
     // region Listeners
     private EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
         @Override
         public void onLoadMore(int page, int totalItemsCount) {
-            if(isOnline) {   // Load more timeline from Twitter https://dev.twitter.com/rest/public/timelines
-                populateTimeline(tweets.get(totalItemsCount - 1).getUid() - 1);
-            }
-        }
-    };
-
-    private AdapterView.OnItemClickListener onTweetClick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if(isOnline) {
-                Intent i = new Intent(getActivity(), TweetActivity.class);
-                i.putExtra("tweet", tweets.get(position));
-                startActivity(i);
+            if (isOnline) {   // Load more timeline from Twitter https://dev.twitter.com/rest/public/timelines
+                populateTimeline();
             }
         }
     };
@@ -62,19 +47,26 @@ public class HomeTimelineFragment extends TweetsListFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             isOnline = Helpers.iAmOnline(context);
-            lvTweets.setOnScrollListener(isOnline ? endlessScrollListener : null);
+            lvUsers.setOnScrollListener(isOnline ? endlessScrollListener : null);
         }
     };
 
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            if(isOnline) {
-                client.getHomeTimeline(-1, new JsonHttpResponseHandler() {
+            if (isOnline) {
+                String screenName = getArguments().getString("screen_name");
+                client.getUserFollowers(screenName, null, new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                        replaceAll(Tweet.fromJSONArray(json));
-                        updateCache(tweets, true);
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                        List<User> users = null;
+                        try {
+                            users = User.fromJSONArray(json.getJSONArray("users"));
+                            nextUserCursor = json.getString("next_cursor_str");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        replaceAll(users);
                     }
 
                     @Override
@@ -99,14 +91,20 @@ public class HomeTimelineFragment extends TweetsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         client = TwitterApplication.getRestClient();    // singleton client
 
-        if(isOnline) {
-            populateTimeline(-1);
-        } else {
-            addAll(Tweet.getAll());
+        if (isOnline) {
+            populateTimeline();
         }
+    }
+
+    public static FollowingFragment newInstance(String screenName) {
+        FollowingFragment fragmentDemo = new FollowingFragment();
+        Bundle args = new Bundle();
+        args.putString("screen_name", screenName);
+        fragmentDemo.setArguments(args);
+        return fragmentDemo;
     }
 
     @Override
@@ -124,19 +122,23 @@ public class HomeTimelineFragment extends TweetsListFragment {
     }
 
     private void setUpListeners() {
-        lvTweets.setOnScrollListener(endlessScrollListener);
-        lvTweets.setOnItemClickListener(onTweetClick);
+        lvUsers.setOnScrollListener(endlessScrollListener);
         swipeContainer.setOnRefreshListener(onRefreshListener);
     }
 
-    private void populateTimeline(final long lastTweetId) {
-        client.getHomeTimeline(lastTweetId, new JsonHttpResponseHandler() {
+    private void populateTimeline() {
+        String screenName = getArguments().getString("screen_name");
+        client.getUserFriends(screenName, nextUserCursor, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                // clean up DB when fetching new users
-                List<Tweet> tweets = Tweet.fromJSONArray(json);
-                addAll(tweets);
-                updateCache((ArrayList<Tweet>) tweets, lastTweetId == -1);
+            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                List<User> users = null;
+                try {
+                    users = User.fromJSONArray(json.getJSONArray("users"));
+                    nextUserCursor = json.getString("next_cursor_str");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                addAll(users);
             }
 
             @Override
@@ -144,22 +146,5 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 Log.d("DEBUG", errorResponse.toString());
             }
         });
-    }
-
-    private void updateCache(ArrayList<Tweet> newTweets, boolean cleanCache) {
-        if(cleanCache && Tweet.countAll() > 0) {
-            new Delete().from(Tweet.class).execute();
-        }
-        // re-populate with new users (bulk insert)
-        ActiveAndroid.beginTransaction();
-        try {
-            for (int i = 0; i < newTweets.size(); i++) {
-                newTweets.get(i).getUser().save();
-                newTweets.get(i).save();
-            }
-            ActiveAndroid.setTransactionSuccessful();
-        } finally {
-            ActiveAndroid.endTransaction();
-        }
     }
 }

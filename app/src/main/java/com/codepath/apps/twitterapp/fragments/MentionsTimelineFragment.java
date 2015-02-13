@@ -127,7 +127,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         client.getMentionsTimeline(lastTweetId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                // clean up DB when fetching new tweets
+                // clean up DB when fetching new users
                 List<Tweet> tweets = Tweet.fromJSONArray(json);
                 addAll(tweets);
             }
