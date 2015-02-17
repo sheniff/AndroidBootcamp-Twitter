@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import com.squareup.picasso.Picasso;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
+
 public class ProfileActivity extends ActionBarActivity {
 
     // region Variables
@@ -36,6 +39,7 @@ public class ProfileActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_profile);
         bindUIElements();
         // Get the screen name
@@ -74,8 +78,8 @@ public class ProfileActivity extends ActionBarActivity {
         getSupportActionBar().setTitle("@" + user.getScreenName());
         tvUsername.setText(user.getName());
         tvTagLine.setText(user.getTagline());
-        tvFollowersCount.setText(user.getFollowersCount() + " Followers");
-        tvFollowingCount.setText(user.getFollowingCount() + " Following");
+        tvFollowersCount.setText(NumberFormat.getInstance().format(user.getFollowersCount()) + " Followers");
+        tvFollowingCount.setText(NumberFormat.getInstance().format(user.getFollowingCount()) + " Following");
         Picasso.with(this).load(user.getProfileImageUrl()).into(ivProfileImage);
     }
 

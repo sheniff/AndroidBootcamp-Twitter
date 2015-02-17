@@ -34,8 +34,8 @@
         android:id="@+id/tvScreenName"
         android:textSize="@dimen/handler_textSize_twitter"
         android:textColor="@color/handler_twitter"
-        android:layout_alignBaseline="@+id/tvName"
-        android:layout_toRightOf="@+id/tvName"
-        android:layout_toEndOf="@+id/tvName" />
+        android:layout_below="@+id/tvName"
+        android:layout_alignLeft="@+id/tvName"
+        android:layout_alignStart="@+id/tvName" />
 
 </RelativeLayout>

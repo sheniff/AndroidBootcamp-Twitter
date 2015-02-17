@@ -31,9 +31,11 @@ public class TweetsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
+        View footerView = inflater.inflate(R.layout.item_loader, null, false);
         bindUIElements(v);
         
         lvTweets.setAdapter(aTweets);
+        lvTweets.addFooterView(footerView, null, false);
 
         swipeContainer.setColorSchemeResources(
                 android.R.color.holo_blue_bright,
@@ -49,7 +51,24 @@ public class TweetsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tweets = new ArrayList<>();
-        aTweets = new TweetsArrayAdapter(getActivity(), tweets);
+        aTweets = new TweetsArrayAdapter(getActivity(), tweets) {
+            @Override
+            public void onClickFavorite(Tweet tweet) {
+
+            }
+
+            @Override
+            public void onClickReply(Tweet tweet) {
+                android.support.v4.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+                TweetDialogFragment tweetDialog = TweetDialogFragment.newInstance(tweet);
+                tweetDialog.show(fm, "fragment_tweet");
+            }
+
+            @Override
+            public void onClickRetweet(Tweet tweet) {
+
+            }
+        };
         isOnline = Helpers.iAmOnline(getActivity());
     }
 

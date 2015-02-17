@@ -130,6 +130,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
     }
 
     private void populateTimeline(final long lastTweetId) {
+
         client.getHomeTimeline(lastTweetId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {

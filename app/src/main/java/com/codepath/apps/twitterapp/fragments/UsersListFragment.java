@@ -31,9 +31,11 @@ public class UsersListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_users_list, parent, false);
+        View footerView = inflater.inflate(R.layout.item_loader, null, false);
         bindUIElements(v);
         
         lvUsers.setAdapter(aUsers);
+        lvUsers.addFooterView(footerView, null, false);
 
         swipeContainer.setColorSchemeResources(
                 android.R.color.holo_blue_bright,

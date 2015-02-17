@@ -23,9 +23,6 @@ import com.codepath.apps.twitterapp.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterapp.fragments.MentionsTimelineFragment;
 import com.codepath.apps.twitterapp.models.Tweet;
 
-/*
-Advanced: Improve the user interface and theme the app to feel "twitter branded"
- */
 
 public class TimelineActivity extends ActionBarActivity {
 

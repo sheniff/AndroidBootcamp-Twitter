@@ -25,7 +25,7 @@
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:layout_marginRight="5dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,6 +60,36 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="@color/timestamp_twitter"/>
+        android:textColor="@color/timestamp_twitter" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/tvBody"
+        android:layout_alignLeft="@+id/tvBody"
+        android:layout_alignStart="@+id/tvBody"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_favorite"
+            android:layout_weight=".33" />
+
+        <ImageView
+            android:id="@+id/ivReply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_reply"
+            android:layout_weight=".33" />
+
+        <ImageView
+            android:id="@+id/ivRetweet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_retweet"
+            android:layout_weight=".33" />
+    </LinearLayout>
 </RelativeLayout>

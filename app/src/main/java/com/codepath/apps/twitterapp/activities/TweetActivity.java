@@ -24,8 +24,34 @@ public class TweetActivity extends ActionBarActivity {
     private TextView tvTimestamp;
     private ImageView ivMedia;
     private Tweet tweet;
+    private ImageView ivFavorite;
+    private ImageView ivReply;
+    private ImageView ivRetweet;
     // endregion
 
+    // region Listeners
+    private View.OnClickListener onClickFavorite = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+    private View.OnClickListener onClickReply = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            TweetDialogFragment tweetDialog = TweetDialogFragment.newInstance(tweet);
+            tweetDialog.show(fm, "fragment_tweet");
+        }
+    };
+    private View.OnClickListener onClickRetweet = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+    // endregion
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +67,22 @@ public class TweetActivity extends ActionBarActivity {
     }
 
     private void bindUIElements() {
-        ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
-        tvName = (TextView) findViewById(R.id.tvUsername);
-        tvScreenName = (TextView) findViewById(R.id.tvHandler);
-        tvTweet = (TextView) findViewById(R.id.tvTweet);
-        tvTimestamp = (TextView) findViewById(R.id.tvTimestamp);
-        ivMedia = (ImageView) findViewById(R.id.ivMedia);
+        ivProfileImage  = (ImageView) findViewById(R.id.ivProfileImage);
+        tvName          = (TextView) findViewById(R.id.tvUsername);
+        tvScreenName    = (TextView) findViewById(R.id.tvHandler);
+        tvTweet         = (TextView) findViewById(R.id.tvTweet);
+        tvTimestamp     = (TextView) findViewById(R.id.tvTimestamp);
+        ivMedia         = (ImageView) findViewById(R.id.ivMedia);
+        ivFavorite      = (ImageView) findViewById(R.id.ivFavorite);
+        ivReply         = (ImageView) findViewById(R.id.ivReply);
+        ivRetweet       = (ImageView) findViewById(R.id.ivRetweet);
     }
 
-    private void setUpListeners() {}
+    private void setUpListeners() {
+        ivFavorite.setOnClickListener(onClickFavorite);
+        ivReply.setOnClickListener(onClickReply);
+        ivRetweet.setOnClickListener(onClickRetweet);
+    }
 
     private void populateTweet(Tweet tweet) {
         // profile

@@ -17,7 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class TweetsArrayAdapter extends ArrayAdapter {
+public abstract class TweetsArrayAdapter extends ArrayAdapter {
+
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
         super(context, 0, tweets);
     }
@@ -29,7 +30,14 @@ public class TweetsArrayAdapter extends ArrayAdapter {
         private TextView tvName;
         private TextView tvBody;
         private TextView tvTimestamp;
+        private ImageView ivFavorite;
+        private ImageView ivReply;
+        private ImageView ivRetweet;
     }
+
+    public abstract void onClickFavorite(Tweet tweet);
+    public abstract void onClickReply(Tweet tweet);
+    public abstract void onClickRetweet(Tweet tweet);
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -44,6 +52,10 @@ public class TweetsArrayAdapter extends ArrayAdapter {
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tvName);
             viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
+            viewHolder.ivFavorite = (ImageView) convertView.findViewById(R.id.ivFavorite);
+            viewHolder.ivReply = (ImageView) convertView.findViewById(R.id.ivReply);
+            viewHolder.ivRetweet = (ImageView) convertView.findViewById(R.id.ivRetweet);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -56,6 +68,7 @@ public class TweetsArrayAdapter extends ArrayAdapter {
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(viewHolder.ivProfileImage);
 
+        // listeners
         viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +78,27 @@ public class TweetsArrayAdapter extends ArrayAdapter {
             }
         });
         
+        viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickFavorite(tweet);
+            }
+        });
+
+        viewHolder.ivReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickReply(tweet);
+            }
+        });
+
+        viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickRetweet(tweet);
+            }
+        });
+
         return convertView;
     }
 }
