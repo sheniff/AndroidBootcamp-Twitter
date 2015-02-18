@@ -2,11 +2,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.apps.twitterapp.activities.TimelineActivity">
+
+    <item android:id="@+id/action_search"
+        android:orderInCategory="5"
+        android:title="Search"
+        android:icon="@drawable/ic_search_action"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+    
     <item
         android:id="@+id/action_compose"
         android:title="@string/menu_compose"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:icon="@drawable/compose"
-        android:onClick="compose"/>
+        android:icon="@drawable/ic_tweet_action"
+        android:onClick="compose" />
+
+    <item
+        android:id="@+id/niProfile"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"
+        android:orderInCategory="101"
+        android:onClick="onProfileView"/>
 </menu>

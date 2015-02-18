@@ -91,7 +91,7 @@ public class NewTweetActivity extends ActionBarActivity {
         User myUser = Helpers.fetchProfileFromSharedPrefs(this);
 
         if(myUser.getUid() == 0) {
-            TwitterApplication.getRestClient().getProfile(new JsonHttpResponseHandler(){
+            TwitterApplication.getRestClient().getProfile(null, new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     me = User.fromJSON(response);

@@ -125,7 +125,7 @@ public class TweetDialogFragment extends DialogFragment {
         User myUser = Helpers.fetchProfileFromSharedPrefs(getActivity());
 
         if(myUser.getUid() == 0) {
-            TwitterApplication.getRestClient().getProfile(new JsonHttpResponseHandler(){
+            TwitterApplication.getRestClient().getProfile(null, new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     User me = User.fromJSON(response);

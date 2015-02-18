@@ -25,6 +25,11 @@ public class Tweet extends Model implements Parcelable {
     private User user;
     @Column(name = "CreatedAt")
     private String createdAt;
+    @Column(name = "Favorited")
+    private boolean favorited;
+    @Column(name = "Retweeted")
+    private boolean retweeted;
+
     private ArrayList<String> media;
 
     public Tweet() {
@@ -45,6 +50,8 @@ public class Tweet extends Model implements Parcelable {
         this.createdAt = in.readString();
         this.user = in.readParcelable(User.class.getClassLoader());
         this.media = in.readArrayList(String.class.getClassLoader());
+        this.favorited = in.readInt() == 1;
+        this.retweeted = in.readInt() == 1;
     }
 
     // Deserialize JSON
@@ -66,6 +73,9 @@ public class Tweet extends Model implements Parcelable {
                     tweet.media.add(media.getJSONObject(i).getString("media_url"));
                 }
             }
+            
+            tweet.favorited = jsonObject.getBoolean("favorited");
+            tweet.retweeted = jsonObject.getBoolean("retweeted");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -112,6 +122,22 @@ public class Tweet extends Model implements Parcelable {
         return media;
     }
 
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
+    public void setRetweeted(boolean retweeted) {
+        this.retweeted = retweeted;
+    }
+
     // ORM methods
 
     public static List<Tweet> getAll() {
@@ -140,6 +166,8 @@ public class Tweet extends Model implements Parcelable {
         dest.writeString(createdAt);
         dest.writeParcelable(user, PARCELABLE_WRITE_RETURN_VALUE);
         dest.writeList(media);
+        dest.writeInt(favorited ? 1 : 0);
+        dest.writeInt(retweeted ? 1 : 0);
     }
 
     public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {

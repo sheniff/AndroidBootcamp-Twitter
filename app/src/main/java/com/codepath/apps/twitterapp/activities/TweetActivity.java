@@ -10,9 +10,14 @@ import android.widget.TextView;
 
 import com.codepath.apps.twitterapp.Helpers;
 import com.codepath.apps.twitterapp.R;
+import com.codepath.apps.twitterapp.TwitterApplication;
+import com.codepath.apps.twitterapp.TwitterClient;
 import com.codepath.apps.twitterapp.fragments.TweetDialogFragment;
 import com.codepath.apps.twitterapp.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
 
 public class TweetActivity extends ActionBarActivity {
 
@@ -24,6 +29,75 @@ public class TweetActivity extends ActionBarActivity {
     private TextView tvTimestamp;
     private ImageView ivMedia;
     private Tweet tweet;
+    private ImageView ivFavorite;
+    private ImageView ivReply;
+    private ImageView ivRetweet;
+    private TwitterClient client;
+    // endregion
+
+    // region Listeners
+    private View.OnClickListener onClickFavorite = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (tweet.isFavorited()) {
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.favorite));
+
+                client.unfavorite(tweet.getUid(), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.favorite_on)); // revert image state
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        tweet.setFavorited(false);
+                    }
+                });
+            } else {
+                ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.favorite_on));
+
+                client.favorite(tweet.getUid(), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.favorite)); // revert image state
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        tweet.setFavorited(true);
+                    }
+                });
+            }
+        }
+    };
+    private View.OnClickListener onClickReply = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            TweetDialogFragment tweetDialog = TweetDialogFragment.newInstance(tweet);
+            tweetDialog.show(fm, "fragment_tweet");
+        }
+    };
+    private View.OnClickListener onClickRetweet = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            TwitterClient client = TwitterApplication.getRestClient();
+
+            ivRetweet.setImageDrawable(getResources().getDrawable(R.drawable.retweet_on));
+
+            client.retweet(tweet.getUid(), new AsyncHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    ivRetweet.setImageDrawable(getResources().getDrawable(R.drawable.retweet)); // revert image state
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    tweet.setRetweeted(true);
+                }
+            });
+        }
+    };
     // endregion
 
     @Override
@@ -33,6 +107,7 @@ public class TweetActivity extends ActionBarActivity {
         bindUIElements();
         setUpListeners();
 
+        client = TwitterApplication.getRestClient();
         tweet = getIntent().getParcelableExtra("tweet");
         populateTweet(tweet);
 
@@ -47,9 +122,16 @@ public class TweetActivity extends ActionBarActivity {
         tvTweet = (TextView) findViewById(R.id.tvTweet);
         tvTimestamp = (TextView) findViewById(R.id.tvTimestamp);
         ivMedia = (ImageView) findViewById(R.id.ivMedia);
+        ivFavorite = (ImageView) findViewById(R.id.ivFavorite);
+        ivReply = (ImageView) findViewById(R.id.ivReply);
+        ivRetweet = (ImageView) findViewById(R.id.ivRetweet);
     }
 
-    private void setUpListeners() {}
+    private void setUpListeners() {
+        ivFavorite.setOnClickListener(onClickFavorite);
+        ivReply.setOnClickListener(onClickReply);
+        ivRetweet.setOnClickListener(onClickRetweet);
+    }
 
     private void populateTweet(Tweet tweet) {
         // profile
@@ -62,12 +144,21 @@ public class TweetActivity extends ActionBarActivity {
         tvTweet.setText(tweet.getBody());
 
         // media
-        if(tweet.getMedia() != null && tweet.getMedia().size() > 0) {
+        if (tweet.getMedia() != null && tweet.getMedia().size() > 0) {
             // ToDo: Show all the pics that might be available?
             Picasso.with(this).load(tweet.getMedia().get(0)).into(ivMedia);
             ivMedia.setVisibility(View.VISIBLE);
         } else {
             ivMedia.setVisibility(View.GONE);
+        }
+        
+        // actions
+        if(tweet.isFavorited()) {
+            ivFavorite.setImageDrawable(getResources().getDrawable(R.drawable.favorite_on));
+        }
+
+        if(tweet.isRetweeted()) {
+            ivRetweet.setImageDrawable(getResources().getDrawable(R.drawable.retweet_on));
         }
     }
 

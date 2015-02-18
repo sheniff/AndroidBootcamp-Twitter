@@ -20,5 +20,6 @@
     <string name="default_handler">\@handler</string>
     <string name="default_username">User Name</string>
     <string name="no_reception">No reception. You still can see your old tweets.</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 
 </resources>

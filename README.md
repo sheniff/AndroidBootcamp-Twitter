@@ -2,6 +2,7 @@
 Twitter project for Android Bootcamp at Yahoo!
 
 ![twitter1](https://cloud.githubusercontent.com/assets/1939291/6099041/5d8c00a0-afa3-11e4-973c-295b77235ba0.gif)
+![twitter2b](https://cloud.githubusercontent.com/assets/1939291/6251148/20a279de-b747-11e4-90f7-4b7d73794ff5.gif)
 
 **User Stories:**
 * [x] User can sign in to Twitter using OAuth login
@@ -27,3 +28,26 @@ Twitter project for Android Bootcamp at Yahoo!
 **Bonus Stories:**
 * [x] User can see embedded image media within the tweet detail view
 * [x] Compose activity is replaced with a modal overlay
+
+### Extending features with fragments :D
+**Completed stories**
+* [x] Includes all required user stories from Week 3 Twitter Client
+* [x] User can switch between Timeline and Mention views using tabs.
+   * [x] User can view their home timeline tweets.
+   * [x] User can view the recent mentions of their username.
+* [x] User can navigate to view their own profile
+   * [x] User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+* [x] User can click on the profile image in any tweet to see another user's profile.
+   * [x] User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
+   * [x] Profile view should include that user's timeline
+   * [x] Optional: User can view following / followers list through the profile
+* [x] User can infinitely paginate any of these timelines (home, mentions, user) by scrolling to the bottom
+
+**Completed advanced stories**
+* [x] Advanced: Robust error handling, check if internet is available, handle error cases, network failures
+* [x] Advanced: When a network request is sent, user sees an indeterminate progress indicator
+* [x] Advanced: User can "reply" to any tweet on their home timeline
+   * [x] The user that wrote the original tweet is automatically "@" replied in compose
+* [x] Advanced: User can click on a tweet to be taken to a "detail view" of that tweet
+   * [x] Advanced: User can take favorite (and unfavorite) or reweet actions on a tweet
+* [x] Advanced: Improve the user interface and theme the app to feel twitter branded
