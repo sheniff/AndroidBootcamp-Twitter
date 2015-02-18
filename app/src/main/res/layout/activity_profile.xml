@@ -26,7 +26,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/rlUserHeader"
-        android:layout_margin="10dp">
+        android:layout_marginTop="10dp">
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -49,11 +49,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tagline"
-            android:textColor="@color/handler_twitter"
+            android:textColor="#ff545454"
             android:textSize="@dimen/handler_textSize_twitter"
             android:layout_below="@+id/tvUsername"
             android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:background="#99ffffff"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
 
     </RelativeLayout>
 
@@ -63,9 +67,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlUserHeader"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:padding="10dp"
+        android:background="#99ffffff">
         <TextView
             android:id="@+id/tvFollowers"
             android:layout_width="0dp"
