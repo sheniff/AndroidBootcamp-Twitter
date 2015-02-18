@@ -34,6 +34,7 @@ public class ProfileActivity extends ActionBarActivity {
     TextView tvFollowersCount;
     TextView tvFollowingCount;
     ImageView ivProfileImage;
+    ImageView ivBackgroundImage;
     // endregion
 
     @Override
@@ -46,6 +47,8 @@ public class ProfileActivity extends ActionBarActivity {
         String screenName = getIntent().getStringExtra("screen_name");
         showProfile(screenName);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         vpPager.setAdapter(new ProfilePagerAdapter(getSupportFragmentManager()));
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -54,6 +57,7 @@ public class ProfileActivity extends ActionBarActivity {
 
     private void bindUIElements() {
         ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+        ivBackgroundImage = (ImageView) findViewById(R.id.ivProfileBackground);
         tvUsername = (TextView) findViewById(R.id.tvUsername);
         tvTagLine = (TextView) findViewById(R.id.tvTagLine);
         tvFollowersCount = (TextView) findViewById(R.id.tvFollowers);
@@ -81,6 +85,7 @@ public class ProfileActivity extends ActionBarActivity {
         tvFollowersCount.setText(NumberFormat.getInstance().format(user.getFollowersCount()) + " Followers");
         tvFollowingCount.setText(NumberFormat.getInstance().format(user.getFollowingCount()) + " Following");
         Picasso.with(this).load(user.getProfileImageUrl()).into(ivProfileImage);
+        Picasso.with(this).load(user.getProfileBackgroundImageUrl()).into(ivBackgroundImage);
     }
 
     // Returns the order of the fragments in the view pager

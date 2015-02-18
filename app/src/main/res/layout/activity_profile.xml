@@ -5,6 +5,20 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.twitterapp.activities.ProfileActivity">
 
+    <ImageView
+        android:id="@+id/ivProfileBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_launcher"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/flContainer"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"/>
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -17,33 +31,31 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:id="@+id/ivProfileImage"
+            android:src="@drawable/ic_launcher"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_launcher" />
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/default_username"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/ivProfileImage"
-            android:layout_toEndOf="@+id/ivProfileImage"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_below="@+id/ivProfileImage"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/tvTagLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tagline"
-            android:layout_below="@+id/tvUsername"
-            android:layout_alignLeft="@+id/tvUsername"
-            android:layout_alignStart="@+id/tvUsername"
             android:textColor="@color/handler_twitter"
-            android:textSize="@dimen/handler_textSize_twitter"/>
-        </RelativeLayout>
+            android:textSize="@dimen/handler_textSize_twitter"
+            android:layout_below="@+id/tvUsername"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/llCounts"
@@ -97,14 +109,4 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white" />
     </RelativeLayout>
-
-    <!--<FrameLayout-->
-        <!--android:id="@+id/flContainer"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_below="@+id/llCounts" />-->
 </RelativeLayout>

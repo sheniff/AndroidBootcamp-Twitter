@@ -35,9 +35,9 @@ public abstract class TweetsArrayAdapter extends ArrayAdapter {
         private ImageView ivRetweet;
     }
 
-    public abstract void onClickFavorite(Tweet tweet);
+    public abstract void onClickFavorite(Tweet tweet, View v);
     public abstract void onClickReply(Tweet tweet);
-    public abstract void onClickRetweet(Tweet tweet);
+    public abstract void onClickRetweet(Tweet tweet, View v);
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -68,6 +68,18 @@ public abstract class TweetsArrayAdapter extends ArrayAdapter {
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(viewHolder.ivProfileImage);
 
+        if(tweet.isFavorited()) {
+            viewHolder.ivFavorite.setImageDrawable(convertView.getResources().getDrawable(R.drawable.favorite_on));
+        } else {
+            viewHolder.ivFavorite.setImageDrawable(convertView.getResources().getDrawable(R.drawable.favorite));
+        }
+        
+        if(tweet.isRetweeted()) {
+            viewHolder.ivRetweet.setImageDrawable(convertView.getResources().getDrawable(R.drawable.retweet_on));
+        } else {
+            viewHolder.ivRetweet.setImageDrawable(convertView.getResources().getDrawable(R.drawable.retweet));
+        }
+
         // listeners
         viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +93,7 @@ public abstract class TweetsArrayAdapter extends ArrayAdapter {
         viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickFavorite(tweet);
+                onClickFavorite(tweet, v);
             }
         });
 
@@ -95,7 +107,7 @@ public abstract class TweetsArrayAdapter extends ArrayAdapter {
         viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickRetweet(tweet);
+                onClickRetweet(tweet, v);
             }
         });
 

@@ -104,4 +104,25 @@ public class TwitterClient extends OAuthBaseClient {
         params.put("cursor", cursor);
         getClient().get(apiUrl, params, handler);
     }
+    
+    public void favorite(long tweetId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("favorites/create.json");
+        RequestParams params = new RequestParams();
+        params.put("id", tweetId);
+        getClient().post(apiUrl, params, handler);
+    }
+
+    public void unfavorite(long tweetId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("favorites/destroy.json");
+        RequestParams params = new RequestParams();
+        params.put("id", tweetId);
+        getClient().post(apiUrl, params, handler);
+    }
+
+    public void retweet(long tweetId, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/retweet/" + tweetId + ".json");
+        RequestParams params = new RequestParams();
+        params.put("id", tweetId);
+        getClient().post(apiUrl, params, handler);
+    }
 }

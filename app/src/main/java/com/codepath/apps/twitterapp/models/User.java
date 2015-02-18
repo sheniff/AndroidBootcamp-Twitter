@@ -22,6 +22,8 @@ public class User extends Model implements Parcelable {
     private String name;
     @Column(name = "ProfileImageUrl")
     private String profileImageUrl;
+    @Column(name = "ProfileBackgroundImageUrl")
+    private String profileBackgroundImageUrl;
     @Column(name = "ScreenName")
     private String screenName;
     @Column(name = "Tagline")
@@ -39,6 +41,7 @@ public class User extends Model implements Parcelable {
         this.uid = in.readLong();
         this.name = in.readString();
         this.profileImageUrl = in.readString();
+        this.profileBackgroundImageUrl = in.readString();
         this.screenName = in.readString();
         this.tagline = in.readString();
         this.followersCount = in.readInt();
@@ -51,6 +54,7 @@ public class User extends Model implements Parcelable {
         try {
             user.name = jsonObject.getString("name");
             user.profileImageUrl = jsonObject.getString("profile_image_url");
+            user.profileBackgroundImageUrl = jsonObject.getString("profile_background_image_url");
             user.uid = jsonObject.getLong("id");
             user.screenName = jsonObject.getString("screen_name");
             user.tagline = jsonObject.getString("description");
@@ -89,6 +93,10 @@ public class User extends Model implements Parcelable {
         return profileImageUrl;
     }
 
+    public String getProfileBackgroundImageUrl() {
+        return profileBackgroundImageUrl;
+    }
+
     public String getScreenName() {
         return screenName;
     }
@@ -115,6 +123,10 @@ public class User extends Model implements Parcelable {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public void setProfileBackgroundImageUrl(String profileBackgroundImageUrl) {
+        this.profileBackgroundImageUrl = profileBackgroundImageUrl;
     }
 
     public void setScreenName(String screenName) {
@@ -153,6 +165,7 @@ public class User extends Model implements Parcelable {
         dest.writeLong(uid);
         dest.writeString(name);
         dest.writeString(profileImageUrl);
+        dest.writeString(profileBackgroundImageUrl);
         dest.writeString(screenName);
         dest.writeString(tagline);
         dest.writeInt(followersCount);

@@ -67,16 +67,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/tvBody"
-        android:layout_alignLeft="@+id/tvBody"
-        android:layout_alignStart="@+id/tvBody"
-        android:layout_marginTop="10dp">
-
-        <ImageView
-            android:id="@+id/ivFavorite"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/button_favorite"
-            android:layout_weight=".33" />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp">
 
         <ImageView
             android:id="@+id/ivReply"
@@ -90,6 +83,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/button_retweet"
+            android:layout_weight=".33" />
+
+        <ImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_favorite"
             android:layout_weight=".33" />
     </LinearLayout>
 </RelativeLayout>

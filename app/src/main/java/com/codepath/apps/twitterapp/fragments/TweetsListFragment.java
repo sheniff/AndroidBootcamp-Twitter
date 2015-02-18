@@ -7,12 +7,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.codepath.apps.twitterapp.Helpers;
 import com.codepath.apps.twitterapp.R;
+import com.codepath.apps.twitterapp.TwitterApplication;
+import com.codepath.apps.twitterapp.TwitterClient;
 import com.codepath.apps.twitterapp.adapters.TweetsArrayAdapter;
 import com.codepath.apps.twitterapp.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.Header;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +39,7 @@ public class TweetsListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
         View footerView = inflater.inflate(R.layout.item_loader, null, false);
         bindUIElements(v);
-        
+
         lvTweets.setAdapter(aTweets);
         lvTweets.addFooterView(footerView, null, false);
 
@@ -53,8 +59,39 @@ public class TweetsListFragment extends Fragment {
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(getActivity(), tweets) {
             @Override
-            public void onClickFavorite(Tweet tweet) {
+            public void onClickFavorite(final Tweet tweet, final View v) {
+                TwitterClient client = TwitterApplication.getRestClient();
+                final ImageView ivFavorite = (ImageView) v.findViewById(R.id.ivFavorite);
 
+                if (tweet.isFavorited()) {
+                    ivFavorite.setImageDrawable(v.getResources().getDrawable(R.drawable.favorite));
+
+                    client.unfavorite(tweet.getUid(), new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            ivFavorite.setImageDrawable(v.getResources().getDrawable(R.drawable.favorite_on)); // revert image state
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            tweet.setFavorited(false);
+                        }
+                    });
+                } else {
+                    ivFavorite.setImageDrawable(v.getResources().getDrawable(R.drawable.favorite_on));
+
+                    client.favorite(tweet.getUid(), new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            ivFavorite.setImageDrawable(v.getResources().getDrawable(R.drawable.favorite)); // revert image state
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            tweet.setFavorited(true);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -65,8 +102,23 @@ public class TweetsListFragment extends Fragment {
             }
 
             @Override
-            public void onClickRetweet(Tweet tweet) {
+            public void onClickRetweet(final Tweet tweet, final View v) {
+                TwitterClient client = TwitterApplication.getRestClient();
+                final ImageView ivRetweet = (ImageView) v.findViewById(R.id.ivRetweet);
 
+                ivRetweet.setImageDrawable(v.getResources().getDrawable(R.drawable.retweet_on));
+
+                client.retweet(tweet.getUid(), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        ivRetweet.setImageDrawable(v.getResources().getDrawable(R.drawable.retweet)); // revert image state
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        tweet.setRetweeted(true);
+                    }
+                });
             }
         };
         isOnline = Helpers.iAmOnline(getActivity());
@@ -85,11 +137,11 @@ public class TweetsListFragment extends Fragment {
         aTweets.clear();
         addAll(tweets);
     }
-    
+
     public void add(int pos, Tweet newTweet) {
         // Add to Tweets ArrayList (at the beginning)
         tweets.add(pos, newTweet);
         // Update adapter
         aTweets.notifyDataSetChanged();
-    }    
+    }
 }
